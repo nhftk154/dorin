@@ -1,0 +1,32 @@
+@import "tailwindcss";
+
+:root {
+  --background: #ffffff;
+  --foreground: #171717;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-rubik);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: #0a0a0a;
+    --foreground: #ededed;
+  }
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-rubik), Arial, Helvetica, sans-serif;
+}
+
+/* Latin/numeric content (tickers, prices, ISO dates) embedded inside RTL text should not visually reverse. */
+.ltr-inline {
+  direction: ltr;
+  unicode-bidi: isolate;
+  display: inline-block;
+}
