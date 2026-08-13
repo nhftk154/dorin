@@ -28,7 +28,15 @@ export async function ensureYearCached(currency: string, year: number): Promise<
     }
 
     cache[currency] = currencyMap;
-    await saveCache(cache);
+    try {
+      await saveCache(cache);
+    } catch (err) {
+      // Some hosting platforms (e.g. serverless deployments) have a read-only
+      // filesystem outside a temp directory. Losing the on-disk cache only
+      // costs a re-fetch from BOI on the next cold start — never the user's
+      // own data — so degrade gracefully instead of failing the request.
+      console.warn("BOI rate cache could not be persisted to disk; continuing without it.", err);
+    }
   }
 
   const rateMap: RateMap = {};
